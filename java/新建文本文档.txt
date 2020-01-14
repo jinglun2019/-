@@ -1,0 +1,12 @@
+在代码中通过R.string.app_name 可以获得该字符串的引用。
+在XML中通过@string/app_name 可以获得该字符串的引用。
+
+布局文件，只需要调用R.layout.first_layout 就可以得
+到first_layout.xml 布局的id ，然后将这个值传入setContentView() 方法即可.
+setContentView(R.layout.first_layout);
+然后在Android注册才能生效。（自动导入）
+最后，
+ 在<activity> 标签的内部加入<intent-filter> 标签，并
+在这个标签里添加<action android:name="android.intent.action.MAIN"/> 和
+<category android: name="android.intent.category.LAUNCHER" /> 这两句声
+明即可。

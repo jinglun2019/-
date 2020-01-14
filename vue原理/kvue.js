@@ -14,12 +14,11 @@ class KVue {
     // this.$data.test;
     // new Watcher();
     // this.$data.foo.bar;
-
-    // created执行
-    //  if (options.created) {
-    //      options.created.call(this);
-    //  }
     new Compile(options.el,this);
+    // created执行
+      if (options.created) {
+         options.created.call(this);
+      }
   }
 
   observe(value) {
@@ -31,9 +30,21 @@ class KVue {
     Object.keys(value).forEach(key => {
       this.defineReactive(value, key, value[key]);
       //   代理data中的属性到vue实例上
+      this.proxyData(key);
     });
   }
 
+
+  proxyData(key) {
+    Object.defineProperty(this,key,{
+      get() {
+        return  this.$data[key];
+      },
+      set(newVal) {
+        this.$data[key] = newVal;
+      }
+    });
+  }
   // 数据响应化
   defineReactive(obj, key, val) {
     this.observe(val); // 递归解决数据嵌套
@@ -42,7 +53,7 @@ class KVue {
     Object.defineProperty(obj, key, {
       get() {
         Dep.target && dep.addDep(Dep.target);
-        console.log("sss" + Dep.target);
+        //console.log("sss" + Dep.target);
         return val;
       },
       set(newVal) {
@@ -70,11 +81,18 @@ class Dep {
 }
 
 class Watcher {
-  constructor() {
+  constructor(vm,key,cb) {
+    this.vm = vm;
+    this.key = key;
+    this.cb = cb;
     //将当前watcher实例指向Dep静态属性
     Dep.target = this;
+    this.vm[this.key];
+   console.log(this);
+    Dep.target = null;
   }
   update() {
-    console.log("属性更新了");
+   // console.log("属性更新了");
+   this.cb.call(this.vm,this.vm[this.key]);
   }
 }
