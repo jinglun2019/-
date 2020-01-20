@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="place" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <img id="img" src="face.png" draggable="true" ondragstart="drag(event)" />
+    <style>
+      #place {
+        width: 200px;
+        height: 200px;
+        border: 2px dotted salmon;
+      }
+      #img {
+      }
+    </style>
+    <script>
+      function drag(e) {
+        e.dataTransfer.setData("Text", e.target.id);
+      }
+      function drop(e) {
+        e.preventDefault();
+        var imgId = e.dataTransfer.getData("Text");
+        var img = document.getElementById(imgId);
+        document.getElementById("place").appendChild(img);
+      }
+      function allowDrop(e) {
+        e.preventDefault();
+      }
+	  //div中ondrop阻止默认操作，得到对象，ondragover阻止默认；
+	  //img中ondragstart赋值
+    </script>
+  </body>
+</html>

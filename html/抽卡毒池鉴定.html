@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <output id="out-double"></output>
+    <br />
+    <output id="out-single"></output>
+    <script>
+      //明日方舟，新年卡池毒池鉴定
+      //机制说明：50次以后，每次概率加2%
+
+      //判断两个set是否相等
+      function eqSet(as, bs) {
+        if (as.size !== bs.size) return false;
+        for (var a of as) if (!bs.has(a)) return false;
+        return true;
+      }
+
+      class Bool {
+        constructor(upProbability, setGroup) {
+          this.probability = 0.02; //出六星几率
+          this.upProbability = upProbability; //出新六星几率
+          this.setGroup = setGroup; //卡池key,年 和 阿
+          this.drawCount = 0; //总共抽卡次数
+          this.bottom = 0; //触发保底机制前的次数
+          this.yourBox = new Set();
+        }
+		
+		//开始抽卡
+        drawStart() {
+			//没抽到双六星就继续抽
+          while (!eqSet(this.yourBox, this.setGroup)) {
+            this.drawCount++;
+            let random = Math.random();
+            //抽中
+            if (random < this.probability) {
+              let setSize = this.setGroup.size;
+              //中了新六星
+              if (random < this.probability * this.upProbability) {
+                if (setSize === 1) return;
+                if (Math.random() > 0.5) {
+                  this.yourBox.add("年");
+                } else {
+                  this.yourBox.add("阿");
+                }
+                //中了其他六星
+              } else {
+					;
+              }
+              this.bottom = 0;
+              this.probability = 0.02;
+              //没中
+            } else {
+              this.bottom += 1;
+              if (this.bottom > 50) {
+                this.probability += 0.02;
+              }
+            }
+          }
+        }
+      }
+	  
+	    
+	  
+	  function average_draw(count,num,set ){
+		  let aveage_count = 0;
+		  for(let i = 0;i<count;i++) {
+			   let double = new Bool(num,set);
+			   double.drawStart();
+			   aveage_count += double.drawCount;
+		  }
+		 return   aveage_count / count;
+	  }
+	 let double_count =  average_draw(1000000,0.7 , new Set(["年", "阿"]));
+	 let single_count1 = average_draw(1000000,0.5 , new Set(["年"]) ) ;
+	 let single_count2 = average_draw(1000000,0.5 , new Set(["阿"]) );
+      
+	 
+      
+      document.getElementById("out-double").value =
+        "平均双六星70%概率总共抽卡次数" + double_count ;
+      document.getElementById("out-single").value =
+        "平均分开双池50%概率总共抽卡次数" +
+        (single_count1  + single_count2);
+		 
+    </script>
+  </body>
+</html>

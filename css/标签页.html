@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <input class="nav1" id="li1" type="radio" name="nav" checked>
+    <input class="nav2" id="li2" type="radio" name="nav">
+    <ul class='nav'>
+      <li>
+        <label for="li1">Tab1</label>
+      </li>
+      <li>
+        <label for="li2">Tab2</label>
+      </li>
+    </ul>
+    <ul class="content">
+      <li>Content1</li>
+      <li>Content2</li>
+    </ul>
+  </div>
+  
+  
+
+  <style>
+     
+
+
+.nav>li {
+  display: inline-block
+ }
+
+/* tab按钮的默认样式 */
+.nav>li>label {
+  display: block;
+  padding: 1rem 2rem;
+  cursor: pointer
+}
+
+/* content内容的默认样式 */
+.content>li {
+  display: none;
+  padding: 1rem;
+  
+}
+
+/* tab按钮选中的样式 */
+.nav1:checked~.nav li:first-child,
+.nav2:checked~.nav li:last-child {
+  background-color: #bf8963;
+  color: #fff
+ }
+
+/* content显示的样式 */
+.nav1:checked~.content>li:first-child,
+.nav2:checked~.content>li:last-child {
+  display: block
+}
+
+/* 调皮一下，写个动画 */
+ 
+  </style>
+  <script>
+  
+  </script>
+</body>
+</html>

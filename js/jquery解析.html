@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        (function(window, undefined) {
+    var jQuery = function(selector, context) {
+        // The jQuery object is actually just the init constructor 'enhanced'
+        // 看这里，实例化方法 jQuery() 实际上是调用了其拓展的原型方法 jQuery.fn.init
+        return new jQuery.fn.init(selector, context, rootjQuery);
+    }
+ 
+    // jQuery.prototype 即是 jQuery 的原型，挂载在上面的方法，即可让所有生成的 jQuery 对象使用
+    jQuery.fn = jQuery.prototype = {
+        // 实例化化方法，这个方法可以称作 jQuery 对象构造器
+        init: function(selector, context, rootjQuery) {
+            // ...
+        }
+    }
+    // 这一句很关键，也很绕
+    // jQuery 没有使用 new 运算符将 jQuery 实例化，而是直接调用其函数
+    // 要实现这样,那么 jQuery 就要看成一个类，且返回一个正确的实例
+    // 且实例还要能正确访问 jQuery 类原型上的属性与方法
+    // jQuery 的方式是通过原型传递解决问题，把 jQuery 的原型传递给jQuery.prototype.init.prototype
+    // 所以通过这个方法生成的实例 this 所指向的仍然是 jQuery.fn，所以能正确访问 jQuery 类原型上的属性与方法
+    jQuery.fn.init.prototype = jQuery.fn;
+    console.log(jQuery);
+})(window);
+
+    //自己实现下，无new实例化
+    var Person = function() {
+        return new Person.prototype.init();
+    }
+    Person.prototype = {
+        init:function(){
+            this.age = 18;
+            return this;
+        }
+    }
+    Person.prototype.init.prototype = Person.prototype;
+    
+    console.log(a);
+    </script>
+</body>
+</html>
